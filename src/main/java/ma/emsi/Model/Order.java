@@ -17,15 +17,75 @@ public class Order {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-    @Column(name = "address")
-    private String address;
+    @ManyToOne
+    @JoinColumn(name = "adresse_id")
+    private Adress adress;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method")
-    private PaymentMethod paymentMethod;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Transient // This will not be persisted in the database
+    private Integer productId;
+
+    @Transient // This will not be persisted in the database
+    private Integer userId; // For accepting user ID in requests
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public Integer getAddressId() {
+        return addressId;
+    }
+   // For accepting user ID in requests
+
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
+    }
+
+    @Transient // This will not be persisted in the database
+    private Integer addressId; // For accepting user ID in requests
+
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Adress getAdress() {
+        return adress;
+    }
+
+    public void setAdress(Adress adress) {
+        this.adress = adress;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     @Column(name = "order_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,9 +98,7 @@ public class Order {
     public Order() {}
 
     public Order(Cart cart, String address, PaymentMethod paymentMethod, Double totalAmount) {
-        this.cart = cart;
-        this.address = address;
-        this.paymentMethod = paymentMethod;
+
         this.orderDate = new Date();
         this.totalAmount = totalAmount;
     }
@@ -54,29 +112,6 @@ public class Order {
         this.id = id;
     }
 
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
 
     public Date getOrderDate() {
         return orderDate;

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,4 +79,8 @@ public class PublicService {
                 .collect(Collectors.toList());
 
 }
+    public ProductResponse getProductById(int id) {
+        Optional<Product> productOptional = repositoryProduct.findById(id);
+        return productOptional.map(ProductResponse::new).orElse(null); // Return null if not found
+    }
 }

@@ -9,7 +9,7 @@ public record ProductRequest(@NotNull
         ,@NonNull String tags
         ,@NonNull Double discountValue
         ,@NonNull int quantity
-        ,@NonNull Double price
+        ,@NonNull Double price,@NonNull int brand
 ) {
 
 

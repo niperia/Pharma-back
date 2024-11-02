@@ -25,11 +25,21 @@ public class User implements UserDetails{
     private String username;
     @Column(name = "password")
     private String password;
+    @Column(name="email")
+    private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
 
     public Integer getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setId(Integer id) {
@@ -82,7 +92,12 @@ public class User implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        // Check if the role is not null to avoid NullPointerException
+        if (role != null) {
+            // Create and return a collection of GrantedAuthority with the user's role
+            return List.of(new SimpleGrantedAuthority(role.name()));
+        }
+        return List.of(); // Return an empty list if the role is null
     }
 
     public String getPassword() {

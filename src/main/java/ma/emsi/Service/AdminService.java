@@ -2,13 +2,17 @@ package ma.emsi.Service;
 
 import ma.emsi.Model.Brand;
 import ma.emsi.Model.Category;
+import ma.emsi.Model.Order;
 import ma.emsi.Model.Product;
 import ma.emsi.Repository.BrandRepo;
 import ma.emsi.Repository.CategoryRepo;
+import ma.emsi.Repository.OrderRepository;
 import ma.emsi.Repository.ProductRepo;
 import ma.emsi.dto.product.ProductRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 public class AdminService {
@@ -16,11 +20,13 @@ public class AdminService {
     private final ProductRepo repositoryProduct;
     private final ImgService imgService;
     private final BrandRepo brandRepo;
-    public AdminService(CategoryRepo repository, ProductRepo repositoryProduct, ImgService imgService, BrandRepo brandRepo) {
+    private final OrderRepository orderRepository;
+    public AdminService(CategoryRepo repository, ProductRepo repositoryProduct, ImgService imgService, BrandRepo brandRepo, OrderRepository orderRepository) {
         this.repository = repository;
         this.repositoryProduct = repositoryProduct;
         this.imgService = imgService;
         this.brandRepo = brandRepo;
+        this.orderRepository = orderRepository;
     }
 
     public String AddCategory(Category request) {
@@ -35,7 +41,7 @@ public class AdminService {
         Product product = new Product();
         MultipartFile P =productReq.picture();
         String imgfilename=imgService.addimage(P,"Products");
-        product.setBrand(brandRepo.findById(productReq.category()).orElse(null));
+        product.setBrand(brandRepo.findById(productReq.brand()).orElse(null));
         product.setPicture(imgfilename);
         product.setName(productReq.name());
         product.setCategory(repository.findById(productReq.category()).orElse(null));
@@ -62,4 +68,8 @@ public class AdminService {
         repository.deleteById(id);
         return "deleted.";
     }
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll(); // Fetch all orders
+    }
+
 }

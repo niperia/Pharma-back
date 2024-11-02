@@ -51,4 +51,14 @@ public class PublicController {
 
         return ResponseEntity.ok(posts);
     }
+    @GetMapping("/products/{id}") // Corrected to use a path variable
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable int id) {
+        ProductResponse product = publicService.getProductById(id); // Ensure you implement this method in the service
+        if (product != null) {
+            return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.notFound().build(); // Return 404 if the product is not found
+        }
+    }
+
 }

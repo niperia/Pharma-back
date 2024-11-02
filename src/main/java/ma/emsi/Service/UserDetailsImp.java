@@ -1,11 +1,16 @@
 package ma.emsi.Service;
 
-
+import ma.emsi.Model.User;
 import ma.emsi.Repository.UserRepo;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsImp implements UserDetailsService {
@@ -17,7 +22,23 @@ public class UserDetailsImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByUsername(username)
-                .orElseThrow(()->new UsernameNotFoundException("User not found") );
+        User user = repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.isEnabled(),
+                true, // accountNonExpired
+                true, // credentialsNonExpired
+                true, // accountNonLocked
+                getAuthorities(user)
+        );
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(User user) {
+        return user.getAuthorities().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" ))
+                .collect(Collectors.toList());
     }
 }
