@@ -2,20 +2,17 @@ package ma.emsi.Service;
 
 import ma.emsi.Model.AuthenticationResponse;
 import ma.emsi.Model.User;
-import ma.emsi.Repository.UserRepo;
+import ma.emsi.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class AuthenticationService {
-    private final UserRepo repository;
+    private final UserRepository repository;
     private final PasswordEncoder encoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -23,7 +20,7 @@ public class AuthenticationService {
     private UserDetailsService userDetailsService;
 
 
-    public AuthenticationService(UserRepo repository, PasswordEncoder encoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthenticationService(UserRepository repository, PasswordEncoder encoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.repository = repository;
         this.encoder = encoder;
         this.jwtService = jwtService;

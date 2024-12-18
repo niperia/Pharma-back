@@ -2,18 +2,18 @@ package ma.emsi.Service;
 
 import ma.emsi.Model.Adress;
 import ma.emsi.Model.User;
-import ma.emsi.Repository.AdresseRepo;
-import ma.emsi.Repository.UserRepo;
+import ma.emsi.Repository.AddressRepository;
+import ma.emsi.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class AdresseService {
-    private final AdresseRepo adresseRepo;
-    private final UserRepo userRepo;
+    private final AddressRepository adresseRepo;
+    private final UserRepository userRepo;
 
-    public AdresseService(AdresseRepo adresseRepo, UserRepo userRepo) {
+    public AdresseService(AddressRepository adresseRepo, UserRepository userRepo) {
         this.adresseRepo = adresseRepo;
         this.userRepo = userRepo;
     }

@@ -21,10 +21,10 @@ public class OrderResponse {
 
     public OrderResponse(Order order) {
         this.id = order.getId();
-        this.productName = order.getProduct() != null ? order.getProduct().getName() : null; // Get product name
-        this.address = order.getAdress() != null ? order.getAdress().getAdresse() : null; // Get address
-        this.userId = order.getUser() != null ? order.getUser().getFirstName() + " " + order.getUser().getLastName() : null; // Assuming User has an ID field
-        this.totalAmount = order.getProduct().getPrice();
+//        this.productName = order.getProduct() != null ? order.getProduct().getName() : null; // Get product name
+//        this.address = order.getAdress() != null ? order.getAdress().getAdresse() : null; // Get address
+//        this.userId = order.getUser() != null ? order.getUser().getFirstName() + " " + order.getUser().getLastName() : null; // Assuming User has an ID field
+//        this.totalAmount = order.getProduct().getPrice();
     }
 
 }

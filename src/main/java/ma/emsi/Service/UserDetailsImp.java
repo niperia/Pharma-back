@@ -1,7 +1,7 @@
 package ma.emsi.Service;
 
 import ma.emsi.Model.User;
-import ma.emsi.Repository.UserRepo;
+import ma.emsi.Repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsImp implements UserDetailsService {
-    private final UserRepo repository;
+    private final UserRepository repository;
 
-    public UserDetailsImp(UserRepo repository) {
+    public UserDetailsImp(UserRepository repository) {
         this.repository = repository;
     }
 

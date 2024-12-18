@@ -1,11 +1,8 @@
 package ma.emsi.Model;
 
-
 import jakarta.persistence.*;
 import ma.emsi.Model.Enum.PaymentMethod;
-
 import java.util.Date;
-
 
 @Entity
 @Table(name = "orders")
@@ -17,50 +14,36 @@ public class Order {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @ManyToOne
     @JoinColumn(name = "adresse_id")
     private Adress adress;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Transient // This will not be persisted in the database
-    private Integer productId;
+    @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false) // Linking to Cart
+    private Cart cart;
 
-    @Transient // This will not be persisted in the database
-    private Integer userId; // For accepting user ID in requests
+    @Column(name = "order_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date orderDate;
 
-    public Integer getProductId() {
-        return productId;
+    public Order() {}
+
+    public Order(Cart cart, Adress adress, User user) {
+        this.cart = cart;
+        this.adress = adress;
+        this.user = user;
+        this.orderDate = new Date();
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public Integer getId() {
+        return id;
     }
 
-    public Integer getAddressId() {
-        return addressId;
-    }
-   // For accepting user ID in requests
-
-    public void setAddressId(Integer addressId) {
-        this.addressId = addressId;
-    }
-
-    @Transient // This will not be persisted in the database
-    private Integer addressId; // For accepting user ID in requests
-
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Adress getAdress() {
@@ -79,39 +62,13 @@ public class Order {
         this.user = user;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
-
-    @Column(name = "order_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date orderDate;
-
-    @Column(name = "total_amount")
-    private Double totalAmount;
-
-    // Constructors
-    public Order() {}
-
-    public Order(Cart cart, String address, PaymentMethod paymentMethod, Double totalAmount) {
-
-        this.orderDate = new Date();
-        this.totalAmount = totalAmount;
-    }
-
-    // Getters and setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
 
     public Date getOrderDate() {
         return orderDate;
@@ -119,13 +76,5 @@ public class Order {
 
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
     }
 }
