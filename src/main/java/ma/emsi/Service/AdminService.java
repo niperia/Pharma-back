@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminService {
+
     private final CategoryRepo repository;
     private final ProductRepo repositoryProduct;
     private final ImgService imgService;
@@ -53,6 +55,29 @@ public class AdminService {
         product=repositoryProduct.save(product);
         return "ok success";
     }
+    public String updateProduct(int id, ProductRequest productReq) {
+        Optional<Product> optionalProduct = repositoryProduct.findById(id);
+        if (optionalProduct.isEmpty()) {
+            return "Product not found.";
+        }
+
+        Product product = optionalProduct.get();
+
+        // Update the picture only if a new one is provided
+
+
+        product.setBrand(brandRepo.findById(productReq.brand()).orElse(null));
+        product.setName(productReq.name());
+        product.setCategory(repository.findById(productReq.category()).orElse(null));
+        product.setDescription(productReq.description());
+        product.setPrice(productReq.price());
+        product.setQuantity(productReq.quantity());
+        product.setTags(productReq.tags());
+        product.setDiscountValue(productReq.discountValue());
+
+        repositoryProduct.save(product);
+        return "Product updated successfully.";
+    }
     public String AddBrand(Brand request){
         Brand brand=new Brand();
         brand.setName(request.getName());
@@ -66,6 +91,10 @@ public class AdminService {
     }
     public String DeleteCategory(int id) {
         repository.deleteById(id);
+        return "deleted.";
+    }
+    public String Deletebrand(int id) {
+        brandRepo.deleteById(id);
         return "deleted.";
     }
     public List<Order> getAllOrders() {

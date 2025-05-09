@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 public record ProductRequest(@NotNull
-                               int category, @NonNull String name,@NonNull String description,@NonNull MultipartFile picture
+                               int category, @NonNull String name,@NonNull String description, MultipartFile picture
         ,@NonNull String tags
         ,@NonNull Double discountValue
         ,@NonNull int quantity

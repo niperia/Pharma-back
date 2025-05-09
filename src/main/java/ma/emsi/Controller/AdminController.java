@@ -41,6 +41,14 @@ public class AdminController {
             return ResponseEntity.ok(adminService.AddProduct(productReq));
         }
     }
+    @PutMapping("/admin/product/update/{id}")
+    public ResponseEntity<String> updateProduct(
+            @PathVariable int id,
+            @ModelAttribute ProductRequest productReq) {
+        String response = adminService.updateProduct(id, productReq);
+        return ResponseEntity.ok(response);
+    }
+
     @DeleteMapping("/admin/product/{id}")
     public ResponseEntity<String>DeleteProduct(@PathVariable int id) {
         return ResponseEntity.ok(adminService.DeleteProduct(id));
@@ -48,6 +56,10 @@ public class AdminController {
     @DeleteMapping("/admin/category/{id}")
     public ResponseEntity<String>DeleteCategory(@PathVariable int id) {
         return ResponseEntity.ok(adminService.DeleteCategory(id));
+    }
+    @DeleteMapping("/admin/brand/{id}")
+    public ResponseEntity<String>DeleteBrand(@PathVariable int id) {
+        return ResponseEntity.ok(adminService.Deletebrand(id));
     }
     @GetMapping("/admin/orders")
     @PreAuthorize("hasRole('ADMIN')")
