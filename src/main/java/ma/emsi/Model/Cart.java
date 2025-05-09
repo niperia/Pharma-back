@@ -1,6 +1,5 @@
 package ma.emsi.Model;
 
-
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +13,11 @@ public class Cart {
     @Column(name = "id")
     private Integer id;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 
-    // Constructors
     public Cart() {}
 
-    // Getters and setters
     public Integer getId() {
         return id;
     }
@@ -37,13 +34,16 @@ public class Cart {
         this.items = items;
     }
 
-    // Add item to cart
     public void addItem(CartItem cartItem) {
         cartItem.setCart(this);
         this.items.add(cartItem);
     }
 
-    // Get total price of the cart
+    public void removeItem(CartItem cartItem) {
+        cartItem.setCart(null);
+        this.items.remove(cartItem);
+    }
+
     public Double getTotalPrice() {
         return items.stream()
                 .mapToDouble(CartItem::getTotalPrice)

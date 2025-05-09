@@ -5,6 +5,7 @@ package ma.emsi.Service;
 import ma.emsi.Model.Cart;
 import ma.emsi.Model.CartItem;
 import ma.emsi.Model.Product;
+import ma.emsi.Repository.CartItemRepository;
 import ma.emsi.Repository.CartRepository;
 import ma.emsi.Repository.ProductRepo;
 
@@ -20,34 +21,34 @@ public class CartService {
     private CartRepository cartRepository;
 
     @Autowired
-    private ProductRepo productRepository;
+    private CartItemRepository cartItemRepository;
 
-    // Create or get the cart (For simplicity, we're assuming one cart per session)
+    public Cart getCartById(Integer id) {
+        return cartRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+    }
+
     public Cart createCart() {
-        Cart cart = new Cart();
+        return cartRepository.save(new Cart());
+    }
+
+    public Cart addItemToCart(Integer cartId, CartItem cartItem) {
+        Cart cart = getCartById(cartId);
+        cart.addItem(cartItem);
         return cartRepository.save(cart);
     }
 
-    // Add product to cart
-    public void addProductToCart(Cart cart, Integer productId, int quantity) {
-        Optional<Product> productOptional = productRepository.findById(productId);
-        if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            CartItem cartItem = new CartItem(product, quantity);
-            cart.addItem(cartItem);
-            cartRepository.save(cart);
-        } else {
-            throw new RuntimeException("Product not found");
-        }
+    public Cart removeItemFromCart(Integer cartId, Integer itemId) {
+        Cart cart = getCartById(cartId);
+        CartItem item = cartItemRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+        cart.removeItem(item);
+        cartItemRepository.delete(item);
+        return cartRepository.save(cart);
     }
 
-    // Get total price of cart
-    public Double getCartTotalPrice(Cart cart) {
+    public Double getCartTotal(Integer cartId) {
+        Cart cart = getCartById(cartId);
         return cart.getTotalPrice();
-    }
-
-    // Get cart by ID
-    public Optional<Cart> getCartById(Integer cartId) {
-        return cartRepository.findById(cartId);
     }
 }

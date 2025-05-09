@@ -1,6 +1,5 @@
 package ma.emsi.Model;
 
-
 import jakarta.persistence.*;
 
 @Entity
@@ -13,17 +12,16 @@ public class CartItem {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
     @Column(name = "quantity")
     private int quantity;
 
-    // Constructor
     public CartItem() {}
 
     public CartItem(Product product, int quantity) {
@@ -31,7 +29,6 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    // Getters and setters
     public Integer getId() {
         return id;
     }
@@ -64,7 +61,6 @@ public class CartItem {
         this.cart = cart;
     }
 
-    // Helper to calculate the total price
     public Double getTotalPrice() {
         return product.getPrice() * quantity;
     }

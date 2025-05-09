@@ -3,6 +3,7 @@ package ma.emsi.Controller;
 
 
 import ma.emsi.Model.Cart;
+import ma.emsi.Model.CartItem;
 import ma.emsi.Service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,35 +11,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api/carts")
 public class CartController {
 
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/create")
+    @GetMapping("/{id}")
+    public Cart getCartById(@PathVariable Integer id) {
+        return cartService.getCartById(id);
+    }
+
+    @PostMapping
     public Cart createCart() {
         return cartService.createCart();
     }
 
-    @PostMapping("/{cartId}/add")
-    public String addToCart(@PathVariable Integer cartId, @RequestParam Integer productId, @RequestParam int quantity) {
-        Optional<Cart> cartOptional = cartService.getCartById(cartId);
-        if (cartOptional.isPresent()) {
-            cartService.addProductToCart(cartOptional.get(), productId, quantity);
-            return "Product added to cart!";
-        } else {
-            return "Cart not found!";
-        }
+    @PostMapping("/{cartId}/add-item")
+    public Cart addItemToCart(@PathVariable Integer cartId, @RequestBody CartItem cartItem) {
+        return cartService.addItemToCart(cartId, cartItem);
     }
 
-    @GetMapping("/{cartId}/total")
-    public Double getCartTotalPrice(@PathVariable Integer cartId) {
-        Optional<Cart> cartOptional = cartService.getCartById(cartId);
-        if (cartOptional.isPresent()) {
-            return cartService.getCartTotalPrice(cartOptional.get());
-        } else {
-            return 0.0;
-        }
+    @DeleteMapping("/{cartId}/remove-item/{itemId}")
+    public Cart removeItemFromCart(@PathVariable Integer cartId, @PathVariable Integer itemId) {
+        return cartService.removeItemFromCart(cartId, itemId);
+    }
+
+    @GetMapping("/{id}/total")
+    public Double getTotalPrice(@PathVariable Integer id) {
+        return cartService.getCartTotal(id);
     }
 }
